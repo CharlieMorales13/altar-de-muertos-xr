@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#160c1a">
+  <title>Altar de Muertos XR</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <!-- todo lo que se ve durante la sesión de RA vive en este overlay -->
+  <div id="overlay">
+    <section id="inicio" class="pantalla">
+      <h1>Altar de<br><em>Muertos</em> XR</h1>
+      <p class="sub">Arma la ofrenda en tu propia casa: el altar aparece sobre tu piso o tu mesa y las ofrendas flotan a su alrededor.</p>
+      <ol class="reglas">
+        <li><b>Escanea:</b> mueve el teléfono despacio hacia una superficie con textura hasta que aparezca el círculo.</li>
+        <li><b>Coloca:</b> toca la pantalla para poner el altar.</li>
+        <li><b>Ofrenda:</b> toca las ofrendas correctas (cempasúchil, veladora, pan, copal…) para subirlas al altar. ¡Cuidado con los intrusos como la calabaza de Halloween!</li>
+        <li><b>Gana:</b> completa el altar antes de que se acabe el tiempo. Hay 3 niveles: altar de 2, 3 y 7 pisos.</li>
+      </ol>
+      <p class="puntaje">Acierto +100 (combo hasta x5) · Error −50 · Bono por segundos restantes · ⭐ por rapidez</p>
+      <button id="comenzar" class="btn">Comenzar</button>
+      <p id="soporte" class="nota"></p>
+    </section>
+
+    <div id="hud" class="oculto">
+      <div class="barra">
+        <span id="h-nivel">Nivel 1</span>
+        <span id="h-tiempo">⏱ 50</span>
+        <span id="h-puntos">0</span>
+      </div>
+      <div class="progreso"><div id="h-progreso"></div></div>
+      <div id="h-combo"></div>
+    </div>
+
+    <div id="mensaje" class="oculto"></div>
+
+    <section id="panel" class="oculto">
+      <h2 id="p-titulo"></h2>
+      <p id="p-estrellas"></p>
+      <p id="p-texto"></p>
+      <button id="p-boton" class="btn"></button>
+    </section>
+
+    <button id="salir" class="oculto" aria-label="Salir">✕</button>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
