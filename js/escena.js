@@ -202,7 +202,7 @@ export const CATALOGO = [
   { id: 'hamburguesa', nombre: 'Hamburguesa', correcta: false, construir: hamburguesa, dato: 'No es comida tradicional de ofrenda.' },
 ];
 
-// ---------- modelos GLB opcionales (Meshy) ----------
+// ---------- modelos GLB opcionales (CC0) ----------
 const modelosGLB = {};
 export async function cargarModelos() {
   const loader = new GLTFLoader();

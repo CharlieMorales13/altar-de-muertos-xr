@@ -56,7 +56,7 @@ En cada nivel aparecen más intrusos. Cada partida dura de 2 a 3 minutos, para c
 - WebXR Device API (hit-test, anchors, dom-overlay).
 - three.js 0.160.
 - Web Audio API para música y efectos, y Vibration API.
-- Modelos 3D: procedurales con primitivas de three.js. Opcionalmente se cargan GLB de Meshy desde `assets/models/` (`cempasuchil.glb`, `pan.glb`, `veladora.glb`, `calavera.glb`); si existen, se usan en lugar de los procedurales.
+- Modelos 3D: procedurales con primitivas de three.js. Opcionalmente se cargan GLB CC0 (por ejemplo de Kenney o Poly Pizza) desde `assets/models/` (`cempasuchil.glb`, `pan.glb`, `veladora.glb`, `calavera.glb`); si existen, se usan en lugar de los procedurales.
 
 ## Requisitos
 
@@ -93,7 +93,7 @@ assets/models/     GLB opcionales
 |---|---|---|
 | Código, diseño del juego y modelos procedurales | Carlos Antonio Gómez Morales | MIT (ver `LICENSE`) |
 | Música ("vals de ofrenda") y efectos | Compuestos y sintetizados en código, autoría propia | MIT |
-| Modelos GLB opcionales (si se agregan) | Generados en Meshy AI por Carlos Gómez | CC BY 4.0 (Meshy, plan gratuito) |
+| Modelos GLB opcionales (si se agregan) | Acreditar autor y fuente de cada uno | CC0 / CC BY |
 | three.js | three.js authors | MIT |
 
 El significado de cada ofrenda se basa en la tradición oaxaqueña del Día de Muertos.
