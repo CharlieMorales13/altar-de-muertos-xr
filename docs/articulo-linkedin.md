@@ -34,7 +34,7 @@ WebXR (hit-test, anchors y DOM overlay), three.js, Web Audio API y Vibration API
 Un juego corto, educativo y muy oaxaqueño que se abre desde el navegador. Con esto cierro las cuatro actividades del curso, todas dedicadas a la cultura de Oaxaca: un Tiliche corredor, un filtro de alebrije, una calavera de cempasúchil y este altar.
 
 🎥 [video / GIF aquí]
-💻 Repositorio: https://github.com/TU-USUARIO/04-altar-de-muertos-xr
-🔗 Pruébalo (Chrome Android): https://TU-URL
+💻 Repositorio: https://github.com/CharlieMorales13/altar-de-muertos-xr
+🔗 Pruébalo (Chrome Android): https://altar-de-muertos-xr.carlos-gomez-dev13.workers.dev/
 
 #RealidadAumentada #WebXR #threejs #DíaDeMuertos #Oaxaca #GameDev #Gamificación

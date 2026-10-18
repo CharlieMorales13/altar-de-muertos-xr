@@ -4,6 +4,8 @@ Videojuego de **realidad aumentada sin marcadores**. El teléfono detecta tu pis
 
 > Actividad 4 · Realidad Virtual y Aumentada · 2026
 
+**Pruébalo:** https://altar-de-muertos-xr.carlos-gomez-dev13.workers.dev/ · **Modo demo en PC:** https://altar-de-muertos-xr.carlos-gomez-dev13.workers.dev/?demo
+
 | Inicio | Partida | Nivel completado |
 |---|---|---|
 | ![Inicio](docs/capturas/inicio.png) | ![Juego](docs/capturas/juego.png) | ![Nivel](docs/capturas/nivel.png) |
@@ -74,7 +76,7 @@ blender --background --python modelos/preparar_modelos.py -- <carpeta>
 ## Instalación y uso
 
 ```bash
-git clone <url-del-repo> && cd 04-altar-de-muertos-xr
+git clone https://github.com/CharlieMorales13/altar-de-muertos-xr.git && cd altar-de-muertos-xr
 npx serve .
 ```
 
