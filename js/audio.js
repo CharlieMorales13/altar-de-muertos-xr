@@ -1,4 +1,4 @@
-// Música y efectos sintetizados con Web Audio: sonido de autoría propia, sin archivos externos.
+// Efectos sintetizados con Web Audio (autoría propia) y música desde assets/audio.
 let ctx = null;
 let master = null;
 let musica = null;
@@ -40,28 +40,17 @@ export function sfx(nombre) {
   if (ctx?.state === 'running') SFX[nombre]?.(ctx.currentTime);
 }
 
-// Vals lento en La menor (3/4), melodía original.
-const MELODIA = [440, 0, 523, 494, 0, 440, 415, 0, 494, 440, 0, 0, 392, 0, 440, 494, 0, 523, 494, 0, 440, 330, 0, 0];
-const BAJO = [110, 165, 165, 98, 147, 147, 131, 196, 196, 82, 123, 123];
-
+// Música: "Dios nunca muere" (Macedonio Alcalá) en guitarra, en bucle (ver créditos en el README).
 export function iniciarMusica() {
-  if (!ctx || musica) return;
-  const paso = 60 / 132;
-  let i = 0;
-  let siguiente = ctx.currentTime + 0.1;
-  musica = setInterval(() => {
-    while (siguiente < ctx.currentTime + 0.4) {
-      const m = MELODIA[i % MELODIA.length];
-      if (m) tone(m, siguiente, paso * 1.6, { type: 'sine', vol: 0.06 });
-      tone(BAJO[i % BAJO.length], siguiente, paso * 0.9, { type: 'triangle', vol: i % 3 === 0 ? 0.08 : 0.04 });
-      siguiente += paso;
-      i++;
-    }
-  }, 120);
+  if (musica) return;
+  musica = new Audio('assets/audio/musica.mp3');
+  musica.loop = true;
+  musica.volume = 0.45;
+  musica.play().catch(() => { musica = null; }); // sin permiso de audio: el juego sigue sin música
 }
 
 export function detenerMusica() {
-  clearInterval(musica);
+  musica?.pause();
   musica = null;
 }
 
