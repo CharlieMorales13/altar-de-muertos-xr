@@ -102,7 +102,7 @@ modelos/           script de Blender que prepara los modelos
 |---|---|---|
 | Código, diseño del juego y modelos procedurales | Carlos Antonio Gómez Morales | MIT (ver `LICENSE`) |
 | Efectos de sonido | Sintetizados en código, autoría propia | MIT |
-| Música: *Dios nunca muere* (guitarra) | Composición de Macedonio Alcalá (1868), dominio público; intérprete de la grabación: *por completar* | *por completar* |
+| Música: *Dios nunca muere* (arreglo para guitarras, piano y cuerdas) | Composición de Macedonio Alcalá (1868), dominio público. Arreglo y grabación de [Carlos Rios](https://www.youtube.com/results?search_query=Dios+Nunca+Muere+Guitarra+Carlos+Rios) (YouTube, 2016) | Todos los derechos del autor; se usa con fines educativos y con crédito |
 | [Altar de Día de Muertos](https://sketchfab.com/3d-models/altar-de-dia-de-muertos-4feeb88e7948441c9d9034e32af2e2be) (solo mesa, mantel y papel picado) | [AORV](https://sketchfab.com/aorv) | CC BY 4.0 |
 | [Pan de muerto](https://sketchfab.com/3d-models/pan-de-muerto-fcd63f39aa3a45fc98e7e4ef7193a929) | [gatoperdido](https://sketchfab.com/gatoperdido) | CC BY 4.0 |
 | [Candles Asset Pack](https://sketchfab.com/3d-models/candles-asset-pack-56a68205dae649a388c6e3ba04145a9e) | [Em Marshall](https://sketchfab.com/emarshall) | CC BY 4.0 |
