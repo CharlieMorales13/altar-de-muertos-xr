@@ -345,8 +345,8 @@ function iniciarDemo() {
   scene.background = new THREE.Color(0x2a1b3d);
   const piso = new THREE.GridHelper(4, 20, 0x7b2cbf, 0x4a2a6a);
   scene.add(piso);
-  camera.position.set(0, 1.15, 2.1);
-  camera.lookAt(0, 0.35, 0);
+  camera.position.set(0, 1.5, 2.5);
+  camera.lookAt(0, 0.6, 0); // el altar va sobre la mesa
   colocarAltar(new THREE.Matrix4());
   renderer.domElement.addEventListener('pointerdown', e => {
     if (fase !== 'jugando') return;
