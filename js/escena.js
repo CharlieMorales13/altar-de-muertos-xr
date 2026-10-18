@@ -126,6 +126,30 @@ function cazuela(color) {
   return g;
 }
 
+function botellaMezcal() {
+  const g = new THREE.Group();
+  const botella = malla(new THREE.CylinderGeometry(0.22, 0.24, 0.6, 16), 0xf2f2ee);
+  botella.position.y = 0.3;
+  const cuello = malla(new THREE.CylinderGeometry(0.08, 0.1, 0.25, 12), 0xf2f2ee);
+  cuello.position.y = 0.72;
+  const tapa = malla(new THREE.CylinderGeometry(0.1, 0.1, 0.12, 12), 0x1a1a1a);
+  tapa.position.y = 0.88;
+  const etiqueta = malla(new THREE.CylinderGeometry(0.245, 0.245, 0.25, 16, 1, true), 0x1a1a1a);
+  etiqueta.position.y = 0.3;
+  g.add(botella, cuello, tapa, etiqueta);
+  return g;
+}
+
+function bolsaTakis() {
+  const g = new THREE.Group();
+  const bolsa = malla(new THREE.BoxGeometry(0.55, 0.75, 0.18), 0x5b2a86);
+  bolsa.position.y = 0.38;
+  const franja = malla(new THREE.PlaneGeometry(0.5, 0.2), 0xe03a1e);
+  franja.position.set(0, 0.42, 0.091);
+  g.add(bolsa, franja);
+  return g;
+}
+
 // distractores
 function calabazaHalloween() {
   const g = new THREE.Group();
@@ -196,11 +220,13 @@ export const CATALOGO = [
   { id: 'papel', nombre: 'Papel picado', correcta: true, construir: papelPicado, dato: 'Representa el viento y la alegría de la fiesta.' },
   { id: 'mole', nombre: 'Mole negro', correcta: true, construir: () => cazuela(0x2b1308), dato: 'La comida favorita del difunto; en Oaxaca no falta el mole.' },
   { id: 'chocolate', nombre: 'Chocolate de agua', correcta: true, construir: () => vaso(0x5a2d0c, 1), dato: 'Chocolate oaxaqueño para acompañar el pan.' },
-  { id: 'calabaza', nombre: 'Calabaza de Halloween', correcta: false, construir: calabazaHalloween, dato: 'Es de Halloween, no del Día de Muertos.' },
-  { id: 'celular', nombre: 'Celular', correcta: false, construir: celular, dato: 'No va en la ofrenda.' },
-  { id: 'pizza', nombre: 'Pizza', correcta: false, construir: pizza, dato: 'No es comida tradicional de ofrenda.' },
-  { id: 'balon', nombre: 'Balón', correcta: false, construir: balon, dato: 'No va en la ofrenda.' },
-  { id: 'hamburguesa', nombre: 'Hamburguesa', correcta: false, construir: hamburguesa, dato: 'No es comida tradicional de ofrenda.' },
+  { id: 'mezcal', nombre: 'Mezcal', correcta: true, construir: botellaMezcal, dato: 'Se pone la bebida que más le gustaba a quien recordamos; en Oaxaca, el mezcal.' },
+  { id: 'takis', nombre: 'Takis Fuego', correcta: true, construir: bolsaTakis, dato: 'La ofrenda también lleva los antojos favoritos: no tiene que ser solo comida tradicional.' },
+  { id: 'calabaza', nombre: 'Calabaza de Halloween', correcta: false, construir: calabazaHalloween, dato: 'Es de Halloween. Mateo quiere un altar de Día de Muertos.' },
+  { id: 'celular', nombre: 'Celular', correcta: false, construir: celular, dato: 'No está en la carta: el abuelito ni lo sabía usar.' },
+  { id: 'pizza', nombre: 'Pizza', correcta: false, construir: pizza, dato: 'No está en la carta: al abuelito Chucho no le gustaba.' },
+  { id: 'balon', nombre: 'Balón', correcta: false, construir: balon, dato: 'No está en la carta de Mateo.' },
+  { id: 'hamburguesa', nombre: 'Hamburguesa', correcta: false, construir: hamburguesa, dato: 'El abuelito prefería el mole: no está en la carta.' },
 ];
 
 // ---------- modelos GLB opcionales (CC BY 4.0, ver README) ----------

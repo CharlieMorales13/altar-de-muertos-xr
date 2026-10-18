@@ -7,6 +7,8 @@ Uso:
     altar_de_dia_de_muertos.glb   "Altar de Día de Muertos" de AORV
     pan_de_muerto.glb             "Pan de muerto" de gatoperdido
     candles_asset_pack.glb        "Candles Asset Pack" de Em Marshall
+    malaespina_mezcal_bottle.glb  "Malaespina Mezcal bottle" de santibanezjuan
+    takis_fuego_-_mexico.glb      "Takis Fuego - México" de Luiss Maker
 
 Genera en assets/models/ (texturas de 512 px en JPEG):
     mesa.glb       solo la mesa, el mantel y el papel picado del altar, sin las
@@ -14,6 +16,8 @@ Genera en assets/models/ (texturas de 512 px en JPEG):
                    centro de la mesa en el origen y el frente hacia +Z de glTF.
     pan.glb        pan de muerto reducido.
     veladora.glb   grupo de veladoras reducido.
+    mezcal.glb     botella de mezcal (favorito del abuelito).
+    takis.glb      bolsa de Takis Fuego (favorito del abuelito).
 """
 import os
 import sys
@@ -103,3 +107,10 @@ o = unir_y_reducir(importar("candles_asset_pack.glb"), 6000)
 mn, mx = caja([o])
 a_medida(o, (mn + mx) / 2, mn.z, 1)
 exportar("veladora.glb")
+
+# ---------------------------------------------------------------- favoritos del abuelito
+for archivo, salida in (("malaespina_mezcal_bottle.glb", "mezcal.glb"), ("takis_fuego_-_mexico.glb", "takis.glb")):
+    o = unir_y_reducir(importar(archivo), 5000)
+    mn, mx = caja([o])
+    a_medida(o, (mn + mx) / 2, mn.z, 1)
+    exportar(salida)

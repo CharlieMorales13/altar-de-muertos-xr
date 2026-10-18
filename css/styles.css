@@ -22,7 +22,7 @@ html, body {
 
 canvas { position: fixed; inset: 0; }
 #overlay { position: fixed; inset: 0; pointer-events: none; }
-#overlay button, .pantalla, #panel { pointer-events: auto; }
+#overlay button, .pantalla, #panel, #carta { pointer-events: auto; }
 .oculto { display: none !important; }
 
 .pantalla {
@@ -126,3 +126,38 @@ body.flash-rojo #overlay { animation: flash .35s; }
 @keyframes escanea { 0%, 100% { transform: translateX(-30px) rotate(-12deg); } 50% { transform: translateX(30px) rotate(12deg); } }
 @keyframes late { to { transform: scale(1.15); } }
 @keyframes flash { 50% { background: rgba(224, 32, 58, .35); } }
+
+/* ---------- carta de Mateo ---------- */
+#carta {
+  position: absolute; left: 16px; right: 16px; top: 50%; transform: translateY(-50%);
+  max-width: 460px; margin: 0 auto; padding: 22px 22px 18px 34px;
+  color: #2b2118; background:
+    linear-gradient(90deg, transparent 22px, #e0203a55 22px, #e0203a55 24px, transparent 24px),
+    repeating-linear-gradient(#fdf6e3 0 31px, #9cc3e6 31px 32px);
+  border-radius: 4px; box-shadow: 0 12px 30px rgba(0, 0, 0, .55); rotate: -1.5deg;
+  animation: entra .3s ease-out;
+}
+.c-titulo { margin: 0 0 4px; font: 700 .75rem/1 "Segoe UI", system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #8a6d4f; }
+.c-texto { margin: 0 0 14px; font: 400 1.35rem/32px "Gochi Hand", "Comic Sans MS", cursive; }
+.c-texto b { color: #c2410c; font-weight: 400; text-decoration: underline wavy #ff7a0088; }
+#carta .btn { width: 100%; }
+
+/* lista de la carta en el HUD */
+.carta-hud { display: flex; align-items: flex-start; gap: 8px; margin: 8px 16px 0; }
+#h-carta { flex: none; width: 40px; height: 40px; border-radius: 8px; border: 0; background: #fdf6e3; font-size: 1.3rem; }
+#h-lista { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; list-style: none; }
+#h-lista li { padding: 4px 8px; border-radius: 12px; background: rgba(22, 12, 26, .75); font-size: .78rem; font-weight: 700; }
+#h-lista li::before { content: '○ '; color: var(--amarillo); }
+#h-lista li.hecho { background: var(--verde); }
+#h-lista li.hecho::before { content: '✓ '; color: #fff; }
+#h-lista li.previas { background: none; font-weight: 600; opacity: .85; }
+#h-lista li.previas::before { content: none; }
+
+/* tu mano: se cierra al tomar una ofrenda */
+#mano { position: absolute; right: 22px; bottom: calc(150px + env(safe-area-inset-bottom)); font-size: 3.4rem; filter: drop-shadow(0 4px 8px #000a); }
+#hud.oculto ~ #mano { display: none; } /* solo durante la partida */
+#mano .cerrada { display: none; }
+#mano.agarra { animation: agarra .55s ease-out; }
+#mano.agarra .abierta { display: none; }
+#mano.agarra .cerrada { display: inline; }
+@keyframes agarra { 0% { transform: translateY(0) scale(1); } 35% { transform: translateY(-60px) scale(1.15); } 100% { transform: translateY(0) scale(1); } }

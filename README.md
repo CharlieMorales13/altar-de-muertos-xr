@@ -1,6 +1,6 @@
 # Altar de Muertos XR
 
-Videojuego de **realidad aumentada sin marcadores**. El teléfono detecta tu piso o tu mesa, colocas ahí un **altar de muertos oaxaqueño** a escala real y las ofrendas flotan a su alrededor. Tócalas para subirlas al altar, pero cuidado con los intrusos que no van en una ofrenda.
+Videojuego de **realidad aumentada sin marcadores** con historia: **Mateo** quiere armar el altar de su abuelito Chucho y te escribe cartas con lo que más le gustaba. El teléfono detecta tu piso o tu mesa, colocas ahí un **altar de muertos oaxaqueño** a escala real y las ofrendas flotan alrededor: tómalas con tu mano (tocándolas) y súbelas al altar. Lo que no está en la carta no va.
 
 > Actividad 4 · Realidad Virtual y Aumentada · 2026
 
@@ -18,10 +18,21 @@ El Día de Muertos en Oaxaca se vive armando la ofrenda en casa. El juego lleva 
 
 1. **Escanea:** aparece la indicación "mueve el teléfono despacio" mientras WebXR busca superficies. Cuando encuentra una, aparece un círculo sobre el piso o la mesa.
 2. **Coloca:** toca para anclar el altar: una mesa con mantel y papel picado, y encima los escalones. Se orienta solo hacia ti.
-3. **Arma la ofrenda:** alrededor del altar orbitan ofrendas con su nombre.
-   - **Correctas:** cempasúchil, veladora, pan de muerto, calavera de azúcar, agua, sal, copal, fotografía, papel picado, mole negro y chocolate de agua. Al tocarlas vuelan a su lugar en el altar.
-   - **Intrusos:** calabaza de Halloween, celular, pizza, balón y hamburguesa. Restan puntos.
-4. **Completa el altar** antes de que se acabe el tiempo.
+3. **Lee la carta de Mateo:** cada nivel empieza con una carta escrita a mano (papel rayado y letra de niño) con lo que le gustaba a su abuelito. El reloj no corre mientras la lees y con 📜 la vuelves a abrir.
+4. **Toma las ofrendas:** alrededor del altar orbitan ofrendas con su nombre. Al tocar una, la mano en pantalla se cierra, la ofrenda vuela hacia ti, como si la tomaras, y de ahí a su lugar en el altar.
+   - **Correctas:** lo que pide la carta del nivel y las anteriores. Cada cosa cuenta una sola vez; arriba se ve la lista de la carta y se va palomeando.
+   - **Intrusos:** calabaza de Halloween, celular, pizza, balón y hamburguesa. Se deshacen en tu mano, restan puntos y aparece lo que diría Mateo.
+5. **Completa el altar** antes de que se acabe el tiempo.
+
+### Las cartas
+
+| Carta | Lo que pide Mateo |
+|---|---|
+| 1 | Foto del abuelito, cempasúchil, veladora, vaso de agua, sal y pan de muerto |
+| 2 | Mole negro de la abuelita, chocolate de agua, calavera de azúcar con su nombre y copal |
+| 3 | Su mezcal de los domingos, los Takis Fuego que le robaba aunque le picaban y papel picado |
+
+En WebXR los teléfonos no rastrean las manos, así que "tomar con la mano" se hace tocando la ofrenda: la mano del overlay se cierra y la ofrenda pasa primero frente a la cámara antes de volar al altar.
 
 ### Niveles
 
@@ -58,7 +69,7 @@ En cada nivel aparecen más intrusos. Cada partida dura de 2 a 3 minutos, para c
 - WebXR Device API (hit-test, anchors, dom-overlay).
 - three.js 0.160.
 - Web Audio API para los efectos, `<audio>` para la música y Vibration API.
-- Modelos 3D de Sketchfab con licencia CC BY 4.0 (mesa del altar, pan de muerto y veladoras), adaptados en Blender 5.2 con `modelos/preparar_modelos.py`: a la mesa se le quitan las ofrendas que traía, se lleva a escala real (62 cm de ancho, 47 cm de alto) y se reducen mallas y texturas.
+- Modelos 3D de Sketchfab con licencia CC BY 4.0 (mesa del altar, pan de muerto, veladoras, mezcal y Takis), adaptados en Blender 5.2 con `modelos/preparar_modelos.py`: a la mesa se le quitan las ofrendas que traía, se lleva a escala real (62 cm de ancho, 47 cm de alto) y se reducen mallas y texturas.
 - Las demás ofrendas son procedurales con primitivas de three.js. Cualquier ofrenda se puede sustituir dejando un GLB con su `id` en `assets/models/` (por ejemplo `copal.glb`).
 
 Para regenerar los modelos, con los GLB originales descargados de Sketchfab en una carpeta:
@@ -93,7 +104,7 @@ js/main.js         sesión WebXR, hit-test, anclas, toques, bucle y flujo de niv
 js/juego.js        niveles, puntaje, combo, tiempo y estrellas (sin three.js)
 js/escena.js       altar escalonado, catálogo de ofrendas, retícula
 js/audio.js        música y efectos sintetizados
-assets/models/     mesa.glb, pan.glb, veladora.glb
+assets/models/     mesa.glb, pan.glb, veladora.glb, mezcal.glb, takis.glb
 assets/audio/      musica.mp3
 modelos/           script de Blender que prepara los modelos
 ```
@@ -108,6 +119,9 @@ modelos/           script de Blender que prepara los modelos
 | [Altar de Día de Muertos](https://sketchfab.com/3d-models/altar-de-dia-de-muertos-4feeb88e7948441c9d9034e32af2e2be) (solo mesa, mantel y papel picado) | [AORV](https://sketchfab.com/aorv) | CC BY 4.0 |
 | [Pan de muerto](https://sketchfab.com/3d-models/pan-de-muerto-fcd63f39aa3a45fc98e7e4ef7193a929) | [gatoperdido](https://sketchfab.com/gatoperdido) | CC BY 4.0 |
 | [Candles Asset Pack](https://sketchfab.com/3d-models/candles-asset-pack-56a68205dae649a388c6e3ba04145a9e) | [Em Marshall](https://sketchfab.com/emarshall) | CC BY 4.0 |
+| [Malaespina Mezcal bottle](https://sketchfab.com/3d-models/malaespina-mezcal-bottle-8c5ae788601b4e83931da9e4e28d8baf) | [santibanezjuan](https://sketchfab.com/santibanezjuan) | CC BY 4.0 |
+| [Takis Fuego - México](https://sketchfab.com/3d-models/takis-fuego-mexico-7426e5fa188344668ec3b9dbab348bae) | [Luiss Maker](https://sketchfab.com/thelunesshow0202) | CC BY 4.0 |
+| Tipografía Gochi Hand (carta de Mateo) | Huerta Tipográfica, Google Fonts | SIL OFL 1.1 |
 | three.js | three.js authors | MIT |
 
 El significado de cada ofrenda se basa en la tradición oaxaqueña del Día de Muertos.

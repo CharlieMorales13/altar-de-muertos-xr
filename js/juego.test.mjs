@@ -1,6 +1,6 @@
 // Prueba rápida de reglas y puntaje: node js/juego.test.mjs
 import assert from 'node:assert/strict';
-import { Partida, NIVELES } from './juego.js';
+import { Partida, NIVELES, favoritosHasta } from './juego.js';
 
 const p = new Partida();
 assert.equal(p.estado, 'jugando');
@@ -29,4 +29,7 @@ assert.equal(q.estado, 'perdido');
 q.nivel = NIVELES.length - 1;
 assert.equal(q.siguiente(), false);
 assert.equal(q.estado, 'terminado');
+// las cartas suman favoritos y alcanzan para la meta de cada nivel
+NIVELES.forEach((n, i) => assert.ok(favoritosHasta(i).length >= n.meta, `nivel ${i + 1}: favoritos suficientes`));
+assert.equal(new Set(favoritosHasta(2)).size, favoritosHasta(2).length, 'sin favoritos repetidos');
 console.log('juego ok');

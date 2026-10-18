@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Partida, NIVELES } from './juego.js';
+import { Partida, NIVELES, favoritosHasta } from './juego.js';
 import { CATALOGO, cargarModelos, crearOfrenda, crearAltar, crearReticula } from './escena.js';
 import { initAudio, sfx, iniciarMusica, detenerMusica, vibrar } from './audio.js';
 
@@ -12,6 +12,8 @@ const ui = {
   inicio: $('inicio'), soporte: $('soporte'), hud: $('hud'), mensaje: $('mensaje'), panel: $('panel'), salir: $('salir'),
   nivel: $('h-nivel'), tiempo: $('h-tiempo'), puntos: $('h-puntos'), progreso: $('h-progreso'), combo: $('h-combo'),
   pTitulo: $('p-titulo'), pEstrellas: $('p-estrellas'), pTexto: $('p-texto'), pBoton: $('p-boton'),
+  carta: $('carta'), cTitulo: $('c-titulo'), cTexto: $('c-texto'), cBoton: $('c-boton'),
+  lista: $('h-lista'), verCarta: $('h-carta'), mano: $('mano'),
 };
 
 // ---------- three.js ----------
@@ -38,7 +40,7 @@ raiz.visible = false;
 scene.add(raiz);
 
 // ---------- estado ----------
-let fase = 'inicio'; // inicio | escaneo | colocar | jugando | panel
+let fase = 'inicio'; // inicio | escaneo | colocar | carta | jugando | panel
 let partida = null;
 let altar = null;
 let flotantes = [];
@@ -48,6 +50,7 @@ let hitTestSource = null;
 let ultimoHit = null;
 let ancla = null;
 let estadoPrevio = null;
+let puestos = new Set(); // favoritos de la carta que ya están en el altar
 const reloj = new THREE.Clock();
 const raycaster = new THREE.Raycaster();
 
@@ -70,17 +73,37 @@ function prepararNivel() {
   const n = partida.config;
   altar = crearAltar(n.pisos, n.meta);
   raiz.add(altar);
+  puestos = new Set();
   for (let i = 0; i < FLOTANTES; i++) agregarFlotante(i / FLOTANTES * Math.PI * 2);
   estadoPrevio = 'jugando';
-  fase = 'jugando';
   ui.panel.classList.add('oculto');
   ui.hud.classList.remove('oculto');
-  mensaje(`<b>${n.nombre}</b>${n.significado}. Coloca ${n.meta} ofrendas.`, '', 3500);
   actualizarHUD();
+  abrirCarta(true);
 }
 
+// La carta de Mateo abre cada nivel; el reloj no corre mientras se lee.
+function abrirCarta(alEmpezar) {
+  const n = partida.config;
+  fase = 'carta';
+  ui.cTitulo.textContent = `Carta ${partida.nivel + 1} de ${NIVELES.length}`;
+  ui.cTexto.innerHTML = n.carta; // textos fijos del juego
+  ui.cBoton.textContent = alEmpezar ? 'Ayudar a Mateo' : 'Seguir';
+  ui.carta.classList.remove('oculto');
+  ui.cBoton.onclick = () => {
+    sfx('clic');
+    ui.carta.classList.add('oculto');
+    fase = 'jugando';
+    if (alEmpezar) mensaje(`<b>${n.nombre}</b>${n.significado}. Pon ${n.meta} cosas de la carta.`, '', 3500);
+  };
+}
+
+const esFavorito = tipo => favoritosHasta(partida.nivel).includes(tipo.id);
+
 function agregarFlotante(ang) {
-  const correctas = CATALOGO.filter(c => c.correcta);
+  // de la carta, solo lo que todavía no está en el altar
+  const pendientes = CATALOGO.filter(c => esFavorito(c) && !puestos.has(c.id));
+  const correctas = pendientes.length ? pendientes : CATALOGO.filter(esFavorito);
   const intrusos = CATALOGO.filter(c => !c.correcta);
   const lista = Math.random() < partida.config.probCorrecta ? correctas : intrusos;
   const tipo = lista[Math.floor(Math.random() * lista.length)];
@@ -100,28 +123,54 @@ function agregarFlotante(ang) {
   flotantes.push(f);
 }
 
+// Punto frente a la cámara donde "está tu mano", en coordenadas del altar.
+function puntoMano() {
+  const cam = renderer.xr.isPresenting ? renderer.xr.getCamera() : camera;
+  return raiz.worldToLocal(new THREE.Vector3(0.1, -0.06, -0.35).applyMatrix4(cam.matrixWorld)); // abajo a la derecha, donde está la mano
+}
+
+function agarrar() {
+  ui.mano.classList.remove('agarra');
+  void ui.mano.offsetWidth; // reinicia la animación
+  ui.mano.classList.add('agarra');
+}
+
+// Tocar una ofrenda la toma con la mano: vuela hacia ti y, si estaba en la
+// carta, de ahí a su lugar en el altar; si no, se deshace en tu mano.
 function tocarOfrenda(f) {
-  const puntos = partida.tocar(f.tipo.correcta);
+  const favorita = esFavorito(f.tipo);
+  if (favorita && puestos.has(f.tipo.id)) { // cada cosa de la carta va una sola vez
+    if (fase !== 'jugando') return;
+    flotantes.splice(flotantes.indexOf(f), 1);
+    raiz.remove(f.obj);
+    chispas(f.obj.position, [0xffffff, 0xffb800]);
+    sfx('clic');
+    mensaje(`<b>Ya está en el altar</b>${f.tipo.nombre} ya lo pusiste. Busca otra cosa de la carta.`, '', 2500);
+    agregarFlotante();
+    return;
+  }
+  const puntos = partida.tocar(favorita);
   if (puntos === null) return;
   flotantes.splice(flotantes.indexOf(f), 1);
-  if (f.tipo.correcta) {
+  f.obj.remove(f.obj.children.find(c => c.isSprite)); // ya no necesita etiqueta
+  agarrar();
+  const vuelo = { obj: f.obj, desde: f.obj.position.clone(), mano: puntoMano(), t: 0 };
+  if (favorita) {
     const slot = altar.userData.slots[partida.colocadas - 1] ?? altar.userData.slots.at(-1);
-    f.obj.remove(f.obj.children.find(c => c.isSprite)); // ya no necesita etiqueta
-    volando.push({ obj: f.obj, desde: f.obj.position.clone(), hasta: slot.pos.clone(), t: 0 });
+    vuelo.hasta = slot.pos.clone();
+    puestos.add(f.tipo.id);
     sfx('acierto');
     vibrar(30);
-    chispas(f.obj.position, [0xffb800, 0xff7a00, 0xffffff]);
     mensaje(`<b>${f.tipo.nombre} +${puntos}</b>${f.tipo.dato}`, 'bien', 3000);
   } else {
-    raiz.remove(f.obj);
     sfx('error');
     vibrar([80, 50, 80]);
-    chispas(f.obj.position, [0xe0203a, 0x333333]);
     document.body.classList.remove('flash-rojo');
     void document.body.offsetWidth;
     document.body.classList.add('flash-rojo');
-    mensaje(`<b>¡Intruso! ${puntos}</b>${f.tipo.nombre}: ${f.tipo.dato}`, 'mal', 3000);
+    mensaje(`<b>¡Eso no! ${puntos}</b>${f.tipo.nombre}: ${f.tipo.dato}`, 'mal', 3000);
   }
+  volando.push(vuelo);
   agregarFlotante();
   actualizarHUD();
 }
@@ -139,8 +188,8 @@ function revisarFinDeNivel() {
       ultimo ? '¡Ofrenda completa!' : '¡Altar listo!',
       '⭐'.repeat(partida.estrellas[partida.nivel]) + '☆'.repeat(3 - partida.estrellas[partida.nivel]),
       ultimo
-        ? `Las almas encontraron el camino. Puntaje final: <b>${partida.puntos}</b> · ${partida.estrellas.reduce((a, b) => a + b, 0)} de 9 estrellas.`
-        : `Puntaje: <b>${partida.puntos}</b>. Sigue: ${NIVELES[partida.nivel + 1].nombre}.`,
+        ? `<i>"Gracias por ayudarme. Ahora sí mi abuelito va a encontrar el camino."</i> Mateo<br>Puntaje final: <b>${partida.puntos}</b> · ${partida.estrellas.reduce((a, b) => a + b, 0)} de 9 estrellas.`
+        : `<i>"¡Le va a encantar!"</i> Mateo<br>Puntaje: <b>${partida.puntos}</b>. Mateo te escribió otra carta para el ${NIVELES[partida.nivel + 1].nombre.toLowerCase()}.`,
       ultimo ? 'Jugar de nuevo' : 'Siguiente nivel',
       () => {
         if (partida.siguiente()) prepararNivel();
@@ -175,7 +224,13 @@ function actualizarHUD() {
   ui.puntos.textContent = `${partida.puntos} pts`;
   ui.progreso.style.width = `${(partida.colocadas / n.meta) * 100}%`;
   ui.combo.textContent = partida.combo > 1 ? `Combo x${partida.combo}` : '';
+  // lista de la carta de este nivel, palomeando lo que ya está en el altar
+  const nombres = Object.fromEntries(CATALOGO.map(c => [c.id, c.nombre]));
+  ui.lista.innerHTML = n.favoritos.map(id => `<li class="${puestos.has(id) ? 'hecho' : ''}">${nombres[id]}</li>`).join('') +
+    (partida.nivel > 0 ? '<li class="previas">+ lo de las cartas anteriores</li>' : '');
 }
+
+const suave = t => t * t * (3 - 2 * t);
 
 // ---------- partículas ----------
 function chispas(origen, colores) {
@@ -202,7 +257,7 @@ function actualizar(dt, t) {
       particulas.splice(i, 1);
     }
   }
-  if (fase !== 'jugando' && fase !== 'panel') return;
+  if (fase !== 'jugando' && fase !== 'panel' && fase !== 'carta') return;
 
   if (fase === 'jugando') {
     partida.avanzar(dt);
@@ -227,16 +282,29 @@ function actualizar(dt, t) {
     }
   }
 
-  // ofrendas correctas volando a su lugar en el altar
+  // ofrendas tomadas: primero a tu mano (t de 0 a 1) y luego al altar (de 1 a 2)
   for (let i = volando.length - 1; i >= 0; i--) {
     const v = volando[i];
-    v.t = Math.min(1, v.t + dt * 1.6);
-    const e = v.t * v.t * (3 - 2 * v.t);
-    v.obj.position.lerpVectors(v.desde, v.hasta, e);
-    v.obj.position.y += Math.sin(e * Math.PI) * 0.15; // pequeño arco
     v.obj.rotation.y = 0;
-    v.obj.scale.setScalar(1 - 0.3 * e);
-    if (v.t === 1) {
+    if (v.t < 1) {
+      v.t = Math.min(1, v.t + dt / 0.35);
+      v.obj.position.lerpVectors(v.desde, v.mano, suave(v.t));
+      v.obj.scale.setScalar(1 + 0.2 * v.t);
+      if (v.t < 1) continue;
+      if (!v.hasta) { // intruso: se deshace en la mano
+        chispas(v.mano, [0xe0203a, 0x333333]);
+        raiz.remove(v.obj);
+        volando.splice(i, 1);
+        continue;
+      }
+      chispas(v.mano, [0xffb800, 0xff7a00, 0xffffff]);
+    }
+    v.t = Math.min(2, v.t + dt * 1.4);
+    const e = suave(v.t - 1);
+    v.obj.position.lerpVectors(v.mano, v.hasta, e);
+    v.obj.position.y += Math.sin(e * Math.PI) * 0.15; // arco hacia el altar
+    v.obj.scale.setScalar(1.2 - 0.5 * e);
+    if (v.t === 2) {
       sfx('colocar');
       volando.splice(i, 1);
     }
@@ -285,7 +353,9 @@ controlador.addEventListener('select', async () => {
 });
 
 // los botones del overlay no deben contar como toque en la escena
-for (const el of [ui.panel, ui.salir]) el.addEventListener('beforexrselect', e => e.preventDefault());
+for (const el of [ui.panel, ui.salir, ui.carta, ui.verCarta]) el.addEventListener('beforexrselect', e => e.preventDefault());
+ui.mano.addEventListener('animationend', () => ui.mano.classList.remove('agarra')); // vuelve a abrirse
+ui.verCarta.addEventListener('click', () => { if (fase === 'jugando') { sfx('clic'); abrirCarta(false); } });
 
 async function iniciarXR() {
   const sesion = await navigator.xr.requestSession('immersive-ar', {
@@ -354,10 +424,11 @@ function iniciarDemo() {
     tocarConRayo();
   });
   window.tocarPrimera = correcta => { // pruebas automáticas
-    const f = flotantes.find(x => x.tipo.correcta === correcta && x.escala > 0.5);
+    const f = flotantes.find(x => esFavorito(x.tipo) === correcta && x.escala > 0.5);
     if (f) tocarOfrenda(f);
     return !!f;
   };
+  window.cerrarCarta = () => ui.cBoton.click();
   window.avanzar = seg => { for (let i = 0; i < seg * 30; i++) actualizar(1 / 30, reloj.elapsedTime); };
   renderer.setAnimationLoop(() => {
     actualizar(Math.min(reloj.getDelta(), 0.1), reloj.elapsedTime);

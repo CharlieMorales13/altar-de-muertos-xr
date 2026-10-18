@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="theme-color" content="#160c1a">
   <title>Altar de Muertos XR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <script type="importmap">
     {
@@ -20,12 +23,13 @@
   <div id="overlay">
     <section id="inicio" class="pantalla">
       <h1>Altar de<br><em>Muertos</em> XR</h1>
-      <p class="sub">Arma la ofrenda en tu propia casa: el altar aparece sobre tu piso o tu mesa y las ofrendas flotan a su alrededor.</p>
+      <p class="sub">Mateo quiere armar el altar de su abuelito Chucho y te escribió unas cartas con lo que más le gustaba. Ayúdalo: el altar aparece en tu propia casa.</p>
       <ol class="reglas">
         <li><b>Escanea:</b> mueve el teléfono despacio hacia una superficie con textura hasta que aparezca el círculo.</li>
         <li><b>Coloca:</b> toca la pantalla para poner el altar.</li>
-        <li><b>Ofrenda:</b> toca las ofrendas correctas (cempasúchil, veladora, pan, copal…) para subirlas al altar. ¡Cuidado con los intrusos como la calabaza de Halloween!</li>
-        <li><b>Gana:</b> completa el altar antes de que se acabe el tiempo. Hay 3 niveles: altar de 2, 3 y 7 pisos.</li>
+        <li><b>Lee la carta</b> de Mateo: ahí dice qué le gustaba a su abuelito.</li>
+        <li><b>Toma las ofrendas</b> que flotan alrededor tocándolas: tu mano las agarra y las sube al altar. Lo que no está en la carta no va.</li>
+        <li><b>Gana:</b> completa el altar antes de que se acabe el tiempo. Hay 3 cartas y 3 altares: de 2, 3 y 7 pisos.</li>
       </ol>
       <p class="puntaje">Acierto +100 (combo hasta x5) · Error −50 · Bono por segundos restantes · ⭐ por rapidez</p>
       <button id="comenzar" class="btn">Comenzar</button>
@@ -39,8 +43,20 @@
         <span id="h-puntos">0</span>
       </div>
       <div class="progreso"><div id="h-progreso"></div></div>
+      <div class="carta-hud">
+        <button id="h-carta" aria-label="Leer la carta de Mateo">📜</button>
+        <ul id="h-lista"></ul>
+      </div>
       <div id="h-combo"></div>
     </div>
+
+    <div id="mano" aria-hidden="true"><span class="abierta">✋</span><span class="cerrada">✊</span></div>
+
+    <section id="carta" class="oculto">
+      <p id="c-titulo" class="c-titulo"></p>
+      <p id="c-texto" class="c-texto"></p>
+      <button id="c-boton" class="btn"></button>
+    </section>
 
     <div id="mensaje" class="oculto"></div>
 
