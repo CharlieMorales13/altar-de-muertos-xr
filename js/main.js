@@ -89,7 +89,7 @@ function agregarFlotante(ang) {
     obj, tipo,
     ang: ang ?? Math.random() * Math.PI * 2,
     radio: 0.55 + Math.random() * 0.3,
-    altura: 0.15 + Math.random() * 0.55,
+    altura: altar.userData.base + 0.15 + Math.random() * 0.55,
     vel: (Math.random() < 0.5 ? -1 : 1) * (0.12 + Math.random() * 0.12),
     fase: Math.random() * 6,
     vida: VIDA_OFRENDA * (0.6 + Math.random() * 0.4),

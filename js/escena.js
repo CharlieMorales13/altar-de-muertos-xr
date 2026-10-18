@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // Medidas en metros (escala real en RA).
 const ALTO_ALTAR = 0.5;
+const ALTO_MESA = 0.47; // mesa.glb (modelos/preparar_modelos.py): los escalones van sobre el mantel
 const TAM_OFRENDA = 0.09;
 
 const mat = (color, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.7, ...extra });
@@ -202,11 +203,11 @@ export const CATALOGO = [
   { id: 'hamburguesa', nombre: 'Hamburguesa', correcta: false, construir: hamburguesa, dato: 'No es comida tradicional de ofrenda.' },
 ];
 
-// ---------- modelos GLB opcionales (CC0) ----------
+// ---------- modelos GLB opcionales (CC BY 4.0, ver README) ----------
 const modelosGLB = {};
 export async function cargarModelos() {
   const loader = new GLTFLoader();
-  await Promise.all(['cempasuchil', 'pan', 'veladora', 'calavera'].map(id => new Promise(resolve => {
+  await Promise.all([...CATALOGO.map(c => c.id), 'mesa'].map(id => new Promise(resolve => {
     loader.load(`assets/models/${id}.glb`, gltf => { modelosGLB[id] = gltf.scene; resolve(); }, undefined, resolve);
   })));
 }
@@ -264,6 +265,8 @@ export function crearOfrenda(tipo, conEtiqueta = true) {
 // ---------- altar escalonado ----------
 export function crearAltar(pisos, meta) {
   const g = new THREE.Group();
+  const base = modelosGLB.mesa ? ALTO_MESA : 0;
+  if (modelosGLB.mesa) g.add(modelosGLB.mesa.clone());
   const altoPiso = ALTO_ALTAR / pisos;
   const telas = [0x7b2cbf, 0xf7f2e8, 0xe6007e];
   const slots = [];
@@ -273,17 +276,17 @@ export function crearAltar(pisos, meta) {
     const ancho = 0.6 - 0.32 * t;
     const fondo = 0.5 - 0.36 * t;
     const piso = malla(new THREE.BoxGeometry(ancho, altoPiso, fondo), telas[i % telas.length]);
-    piso.position.set(0, altoPiso * (i + 0.5), -(0.5 - fondo) / 2);
+    piso.position.set(0, base + altoPiso * (i + 0.5), -(0.5 - fondo) / 2);
     g.add(piso);
     // orilla de papel picado en el frente de cada piso
     const orilla = malla(new THREE.PlaneGeometry(ancho, altoPiso * 0.3), [0xff7a00, 0x00b3a6, 0xffb800][i % 3], { side: THREE.DoubleSide });
-    orilla.position.set(0, altoPiso * (i + 0.85), fondo / 2 - (0.5 - fondo) / 2 + 0.002);
+    orilla.position.set(0, base + altoPiso * (i + 0.85), fondo / 2 - (0.5 - fondo) / 2 + 0.002);
     g.add(orilla);
     // lugares para las ofrendas, al frente de cada piso (de arriba hacia abajo)
     const frente = fondo / 2 - (0.5 - fondo) / 2 - 0.035;
     for (let k = 0; k < porPiso; k++) {
       const x = (k - (porPiso - 1) / 2) * (ancho / porPiso);
-      slots.push({ piso: pisos - 1 - i, pos: new THREE.Vector3(x, altoPiso * (i + 1), frente) });
+      slots.push({ piso: pisos - 1 - i, pos: new THREE.Vector3(x, base + altoPiso * (i + 1), frente) });
     }
   }
   slots.sort((a, b) => a.piso - b.piso); // primero el piso de arriba
@@ -298,9 +301,9 @@ export function crearAltar(pisos, meta) {
     flor.position.set(Math.cos(a) * 0.3, Math.sin(a) * 0.3, 0);
     arco.add(flor);
   }
-  arco.position.set(0, ALTO_ALTAR, -0.2);
+  arco.position.set(0, base + ALTO_ALTAR, -0.2);
   g.add(arco);
-  g.userData.slots = slots;
+  g.userData = { slots, base };
   return g;
 }
 
