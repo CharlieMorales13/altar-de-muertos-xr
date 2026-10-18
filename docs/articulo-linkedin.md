@@ -18,10 +18,10 @@ Proponer y desarrollar un juego de RA que detecte superficies, ancle objetos vir
 Son tres niveles: el altar de 2 pisos (cielo y tierra), el de 3 (con el inframundo) y el de 7 (los siete pasos hacia el descanso), cada uno con menos tiempo y más intrusos.
 
 🏆 **Gamificación**
-Puntos, combos de hasta x5, bono por tiempo, estrellas por rapidez y un altar que crece frente a ti. Cada acción tiene respuesta visual, sonora y háptica, y la música es un vals que compuse y sinteticé en código.
+Puntos, combos de hasta x5, bono por tiempo, estrellas por rapidez y un altar que crece frente a ti. Cada acción tiene respuesta visual, sonora y háptica, y de fondo suena *Dios nunca muere*, el vals de Macedonio Alcalá que todo oaxaqueño reconoce, en guitarra.
 
 🛠️ **Herramientas**
-WebXR (hit-test, anchors y DOM overlay), three.js, Web Audio API y Vibration API. Todo corre en Chrome para Android, sin instalar nada.
+WebXR (hit-test, anchors y DOM overlay), three.js, Web Audio API y Vibration API, más modelos CC BY 4.0 de Sketchfab (la mesa del altar, el pan de muerto y las veladoras) que adapté en Blender: a la mesa le quité las ofrendas que traía para que el jugador las ponga y la llevé a escala real. Todo corre en Chrome para Android, sin instalar nada.
 
 🧩 **Retos**
 - **Detección de superficies:** en una mesa blanca lisa no encuentra nada. Agregué una pantalla de "mueve el teléfono" y una recomendación de superficies con textura.
