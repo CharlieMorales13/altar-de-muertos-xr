@@ -230,10 +230,12 @@ export const CATALOGO = [
 ];
 
 // ---------- modelos GLB opcionales (CC BY 4.0, ver README) ----------
+// Solo estos tienen GLB en assets/models; el resto se construye con primitivas.
+const CON_GLB = ['mesa', 'pan', 'veladora', 'mezcal', 'takis'];
 const modelosGLB = {};
 export async function cargarModelos() {
   const loader = new GLTFLoader();
-  await Promise.all([...CATALOGO.map(c => c.id), 'mesa'].map(id => new Promise(resolve => {
+  await Promise.all(CON_GLB.map(id => new Promise(resolve => {
     loader.load(`assets/models/${id}.glb`, gltf => { modelosGLB[id] = gltf.scene; resolve(); }, undefined, resolve);
   })));
 }
