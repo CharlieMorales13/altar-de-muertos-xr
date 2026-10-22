@@ -69,8 +69,8 @@ En cada nivel aparecen más intrusos. Cada partida dura de 2 a 3 minutos, para c
 - WebXR Device API (hit-test, anchors, dom-overlay).
 - three.js 0.160.
 - Web Audio API para los efectos, `<audio>` para la música y Vibration API.
-- Modelos 3D de Sketchfab con licencia CC BY 4.0 (mesa del altar, pan de muerto, veladoras, mezcal y Takis), adaptados en Blender 5.2 con `modelos/preparar_modelos.py`: a la mesa se le quitan las ofrendas que traía, se lleva a escala real (62 cm de ancho, 47 cm de alto) y se reducen mallas y texturas.
-- Las demás ofrendas son procedurales con primitivas de three.js. Cualquier ofrenda se puede sustituir dejando un GLB con su `id` en `assets/models/` (por ejemplo `copal.glb`).
+- Modelos 3D de Sketchfab con licencia CC BY 4.0 (mesa del altar, pan de muerto, veladoras, mezcal, Takis, calavera, cempasúchil, papel picado, foto, jarro de chocolate, calabaza y pizza; la hamburguesa es CC BY-SA 4.0), adaptados en Blender 5.2 con `modelos/preparar_modelos.py`: a la mesa se le quitan las ofrendas que traía, se lleva a escala real (62 cm de ancho, 47 cm de alto) y se reducen mallas y texturas.
+- Las demás ofrendas (agua, sal, copal, mole, celular y balón) son procedurales con primitivas de three.js. Para sustituir una, deja un GLB con su `id` en `assets/models/` (por ejemplo `copal.glb`) y agrega el `id` a `CON_GLB` en `js/escena.js`.
 
 Para regenerar los modelos, con los GLB originales descargados de Sketchfab en una carpeta:
 
@@ -104,7 +104,7 @@ js/main.js         sesión WebXR, hit-test, anclas, toques, bucle y flujo de niv
 js/juego.js        niveles, puntaje, combo, tiempo y estrellas (sin three.js)
 js/escena.js       altar escalonado, catálogo de ofrendas, retícula
 js/audio.js        música y efectos sintetizados
-assets/models/     mesa.glb, pan.glb, veladora.glb, mezcal.glb, takis.glb
+assets/models/     mesa, pan, veladora, mezcal, takis, calavera, cempasuchil, papel, foto, chocolate, calabaza, pizza y hamburguesa (.glb)
 assets/audio/      musica.mp3
 modelos/           script de Blender que prepara los modelos
 ```
@@ -121,6 +121,13 @@ modelos/           script de Blender que prepara los modelos
 | [Candles Asset Pack](https://sketchfab.com/3d-models/candles-asset-pack-56a68205dae649a388c6e3ba04145a9e) | [Em Marshall](https://sketchfab.com/emarshall) | CC BY 4.0 |
 | [Malaespina Mezcal bottle](https://sketchfab.com/3d-models/malaespina-mezcal-bottle-8c5ae788601b4e83931da9e4e28d8baf) | [santibanezjuan](https://sketchfab.com/santibanezjuan) | CC BY 4.0 |
 | [Takis Fuego - México](https://sketchfab.com/3d-models/takis-fuego-mexico-7426e5fa188344668ec3b9dbab348bae) | [Luiss Maker](https://sketchfab.com/thelunesshow0202) | CC BY 4.0 |
+| [278: Sugar Skull](https://sketchfab.com/3d-models/278-sugar-skull-801c742b1461478a83b332efcf45e639) | [alexdelker](https://sketchfab.com/alexdelker) | CC BY 4.0 |
+| [Marigolds in a vase 072022](https://sketchfab.com/3d-models/marigolds-in-a-vase-072022-60d85090755e48faa8cf56d61ad81dee) | [Roberta (Robin) Sullivan](https://sketchfab.com/rrs) | CC BY 4.0 |
+| [Papel Picado del Dia de muertos](https://sketchfab.com/3d-models/papel-picado-del-dia-de-muertos-38c0aa70f7c944dbbbbf68d1a0012622) | [Sandra.Arandano](https://sketchfab.com/Sandy.Celic) | CC BY 4.0 |
+| [The Day of the Dead (solo el portarretratos y el jarro de chocolate)](https://sketchfab.com/3d-models/the-day-of-the-dead-3307a813d92544d89f1245f1764e68fa) | [rodrigoscar](https://sketchfab.com/rodrigoscar) | CC BY 4.0 |
+| [Halloween Pumpkin](https://sketchfab.com/3d-models/halloween-pumpkin-abb8d12f13b44c6686628abde758bf1a) | [Charlie Tinley](https://sketchfab.com/Tnkii) | CC BY 4.0 |
+| [Pizza](https://sketchfab.com/3d-models/pizza-53ea3b41f92c475295367c1096538573) | [Gurkha](https://sketchfab.com/gurkha) | CC BY 4.0 |
+| [Back Yard Burgers - Classic Burger](https://sketchfab.com/3d-models/back-yard-burgers-classic-burger-6e13942ff76d4129b06e097cdd060adb) | [Ehsan Abbasi](https://sketchfab.com/EhsanAbbasi) | CC BY-SA 4.0 (la versión reducida `hamburguesa.glb` se comparte con la misma licencia) |
 | Tipografía Gochi Hand (carta de Mateo) | Huerta Tipográfica, Google Fonts | SIL OFL 1.1 |
 | three.js | three.js authors | MIT |
 

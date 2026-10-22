@@ -9,6 +9,13 @@ Uso:
     candles_asset_pack.glb        "Candles Asset Pack" de Em Marshall
     malaespina_mezcal_bottle.glb  "Malaespina Mezcal bottle" de santibanezjuan
     takis_fuego_-_mexico.glb      "Takis Fuego - México" de Luiss Maker
+    278_sugar_skull.glb           "278: Sugar Skull" de alexdelker
+    marigolds_in_a_vase_072022.glb "Marigolds in a vase 072022" de Roberta (Robin) Sullivan
+    papel_picado_del_dia_de_muertos.glb "Papel Picado del Dia de muertos" de Sandra.Arandano
+    the_day_of_the_dead.glb       "The Day of the Dead" de rodrigoscar
+    halloween_pumpkin.glb         "Halloween Pumpkin" de Charlie Tinley
+    pizza.glb                     "Pizza" de Gurkha
+    back_yard_burgers_-_classic_burger.glb "Back Yard Burgers - Classic Burger" de Ehsan Abbasi (CC BY-SA 4.0)
 
 Genera en assets/models/ (texturas de 512 px en JPEG):
     mesa.glb       solo la mesa, el mantel y el papel picado del altar, sin las
@@ -18,6 +25,10 @@ Genera en assets/models/ (texturas de 512 px en JPEG):
     veladora.glb   grupo de veladoras reducido.
     mezcal.glb     botella de mezcal (favorito del abuelito).
     takis.glb      bolsa de Takis Fuego (favorito del abuelito).
+    calavera.glb, cempasuchil.glb, papel.glb, foto.glb, chocolate.glb:
+                   ofrendas; la foto y el jarro de chocolate se recortan de la
+                   escena "The Day of the Dead".
+    calabaza.glb, pizza.glb, hamburguesa.glb: intrusos.
 """
 import os
 import sys
@@ -65,6 +76,34 @@ def unir_y_reducir(objs, caras):
     return o
 
 
+def solo(objs):
+    """Borra de la escena todo lo que no sea `objs` (para recortar piezas de una escena)."""
+    for o in [x for x in bpy.data.objects if x.type == "MESH" and x not in objs]:
+        bpy.data.objects.remove(o)
+    return objs
+
+
+def preparar(objs, caras, nombre, formato="JPEG", limpiar=None):
+    o = unir_y_reducir(solo(objs), caras)
+    if limpiar:
+        limpiar(o)
+    mn, mx = caja([o])
+    a_medida(o, (mn + mx) / 2, mn.z, 1)
+    exportar(nombre, formato)
+
+
+def quitar_base(o):
+    """El escaneo del florero trae el disco de la mesa: fuera las caras pegadas al piso."""
+    import bmesh
+    bm = bmesh.new()
+    bm.from_mesh(o.data)
+    z0 = min(v.co.z for v in bm.verts)
+    alto = max(v.co.z for v in bm.verts) - z0
+    bmesh.ops.delete(bm, geom=[f for f in bm.faces if f.calc_center_median().z < z0 + alto * 0.04], context="FACES")
+    bm.to_mesh(o.data)
+    bm.free()
+
+
 def a_medida(o, centro_xy, piso_z, escala):
     """Mueve el centro a (0, 0, piso) y escala alrededor del origen."""
     for v in o.data.vertices:
@@ -72,12 +111,13 @@ def a_medida(o, centro_xy, piso_z, escala):
     o.data.update()
 
 
-def exportar(nombre):
+def exportar(nombre, formato="JPEG"):
+    """formato="AUTO" conserva PNG con transparencia (papel picado)."""
     for img in bpy.data.images:
         if img.size[0] > 512:
             img.scale(512, 512)
     ruta = os.path.join(SALIDA, nombre)
-    bpy.ops.export_scene.gltf(filepath=ruta, export_format="GLB", export_image_format="JPEG",
+    bpy.ops.export_scene.gltf(filepath=ruta, export_format="GLB", export_image_format=formato,
                               export_jpeg_quality=85, export_animations=False, export_yup=True)
     print("OK", nombre, os.path.getsize(ruta) // 1024, "KB")
 
@@ -114,3 +154,18 @@ for archivo, salida in (("malaespina_mezcal_bottle.glb", "mezcal.glb"), ("takis_
     mn, mx = caja([o])
     a_medida(o, (mn + mx) / 2, mn.z, 1)
     exportar(salida)
+
+# ---------------------------------------------------------------- más ofrendas
+preparar(importar("278_sugar_skull.glb"), 5000, "calavera.glb")
+preparar(importar("marigolds_in_a_vase_072022.glb"), 6000, "cempasuchil.glb", limpiar=quitar_base)
+objs = importar("papel_picado_del_dia_de_muertos.glb")  # una sola banderita: las tres juntas quedan diminutas
+preparar([o for o in objs if "morado" in o.data.materials[0].name], 100, "papel.glb", formato="AUTO")
+escena = importar("the_day_of_the_dead.glb")
+preparar([o for o in escena if o.name.startswith("cuadro:") and "cristal" not in o.name], 3000, "foto.glb")
+escena = importar("the_day_of_the_dead.glb")
+preparar([o for o in escena if o.name.startswith("taza_barro_01:")], 3000, "chocolate.glb")
+
+# ---------------------------------------------------------------- intrusos
+preparar(importar("halloween_pumpkin.glb"), 5000, "calabaza.glb")
+preparar(importar("pizza.glb"), 3000, "pizza.glb")
+preparar(importar("back_yard_burgers_-_classic_burger.glb"), 5000, "hamburguesa.glb")
