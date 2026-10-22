@@ -22,7 +22,7 @@ Son tres cartas y tres niveles: el altar de 2 pisos, el de 3 y el de 7.
 Puntos, combos de hasta x5, bono por tiempo, estrellas por rapidez y un altar que crece frente a ti. Cada acción responde con imagen, sonido y vibración. De fondo suena *Dios nunca muere*, el vals de Macedonio Alcalá, en el arreglo para guitarra de Carlos Rios.
 
 🛠️ **Herramientas**
-WebXR (hit-test, anchors y DOM overlay), three.js, Web Audio y Vibration API, y modelos CC BY 4.0 de Sketchfab (mesa del altar, pan de muerto, veladoras, mezcal y Takis) que adapté en Blender: a la mesa le quité las ofrendas que traía y la llevé a escala real. Corre en Chrome para Android, sin instalar nada.
+WebXR (hit-test, anchors y DOM overlay), three.js, Web Audio y Vibration API, y modelos de Sketchfab con licencia Creative Commons para la mesa y casi todas las ofrendas, que adapté en Blender: a la mesa le quité las ofrendas que traía y la llevé a escala real. Corre en Chrome para Android, sin instalar nada.
 
 🧩 **Retos**
 - **Detectar superficies:** en una mesa blanca lisa no encuentra nada, así que agregué una pantalla de "mueve el teléfono" con recomendaciones.
