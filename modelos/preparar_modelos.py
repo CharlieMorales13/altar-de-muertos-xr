@@ -14,6 +14,8 @@ Uso:
     papel_picado_del_dia_de_muertos.glb "Papel Picado del Dia de muertos" de Sandra.Arandano
     the_day_of_the_dead.glb       "The Day of the Dead" de rodrigoscar
     halloween_pumpkin.glb         "Halloween Pumpkin" de Charlie Tinley
+    glass_of_water_with_2_ice.glb "Glass of water with 2 ice" de Kenniuuu
+    scan_2023-05-13t180722.525z.glb "Scan 2023-05-13T18:07:22.525Z" de EGFoodScans
     pizza.glb                     "Pizza" de Gurkha
     back_yard_burgers_-_classic_burger.glb "Back Yard Burgers - Classic Burger" de Ehsan Abbasi (CC BY-SA 4.0)
 
@@ -28,6 +30,7 @@ Genera en assets/models/ (texturas de 512 px en JPEG):
     calavera.glb, cempasuchil.glb, papel.glb, foto.glb, chocolate.glb:
                    ofrendas; la foto y el jarro de chocolate se recortan de la
                    escena "The Day of the Dead".
+    agua.glb, mole.glb: vaso de agua y plato de comida (escaneado).
     calabaza.glb, pizza.glb, hamburguesa.glb: intrusos.
 """
 import os
@@ -164,6 +167,9 @@ escena = importar("the_day_of_the_dead.glb")
 preparar([o for o in escena if o.name.startswith("cuadro:") and "cristal" not in o.name], 3000, "foto.glb")
 escena = importar("the_day_of_the_dead.glb")
 preparar([o for o in escena if o.name.startswith("taza_barro_01:")], 3000, "chocolate.glb")
+
+preparar(importar("glass_of_water_with_2_ice.glb"), 4000, "agua.glb")
+preparar(importar("scan_2023-05-13t180722.525z.glb"), 6000, "mole.glb")
 
 # ---------------------------------------------------------------- intrusos
 preparar(importar("halloween_pumpkin.glb"), 5000, "calabaza.glb")

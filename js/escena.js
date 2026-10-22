@@ -231,7 +231,7 @@ export const CATALOGO = [
 
 // ---------- modelos GLB opcionales (CC BY 4.0, ver README) ----------
 // Solo estos tienen GLB en assets/models; el resto se construye con primitivas.
-const CON_GLB = ['mesa', 'pan', 'veladora', 'mezcal', 'takis', 'calavera', 'cempasuchil', 'papel', 'foto', 'chocolate', 'calabaza', 'pizza', 'hamburguesa'];
+const CON_GLB = ['mesa', 'pan', 'veladora', 'mezcal', 'takis', 'calavera', 'cempasuchil', 'papel', 'foto', 'chocolate', 'agua', 'mole', 'calabaza', 'pizza', 'hamburguesa'];
 const modelosGLB = {};
 export async function cargarModelos() {
   const loader = new GLTFLoader();

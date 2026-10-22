@@ -69,8 +69,8 @@ En cada nivel aparecen más intrusos. Cada partida dura de 2 a 3 minutos, para c
 - WebXR Device API (hit-test, anchors, dom-overlay).
 - three.js 0.160.
 - Web Audio API para los efectos, `<audio>` para la música y Vibration API.
-- Modelos 3D de Sketchfab con licencia CC BY 4.0 (mesa del altar, pan de muerto, veladoras, mezcal, Takis, calavera, cempasúchil, papel picado, foto, jarro de chocolate, calabaza y pizza; la hamburguesa es CC BY-SA 4.0), adaptados en Blender 5.2 con `modelos/preparar_modelos.py`: a la mesa se le quitan las ofrendas que traía, se lleva a escala real (62 cm de ancho, 47 cm de alto) y se reducen mallas y texturas.
-- Las demás ofrendas (agua, sal, copal, mole, celular y balón) son procedurales con primitivas de three.js. Para sustituir una, deja un GLB con su `id` en `assets/models/` (por ejemplo `copal.glb`) y agrega el `id` a `CON_GLB` en `js/escena.js`.
+- Modelos 3D de Sketchfab con licencia CC BY 4.0 (mesa del altar, pan de muerto, veladoras, mezcal, Takis, calavera, cempasúchil, papel picado, foto, jarro de chocolate, vaso de agua, plato de comida, calabaza y pizza; la hamburguesa es CC BY-SA 4.0), adaptados en Blender 5.2 con `modelos/preparar_modelos.py`: a la mesa se le quitan las ofrendas que traía, se lleva a escala real (62 cm de ancho, 47 cm de alto) y se reducen mallas y texturas.
+- Las demás ofrendas (sal, copal, celular y balón) son procedurales con primitivas de three.js. Para sustituir una, deja un GLB con su `id` en `assets/models/` (por ejemplo `copal.glb`) y agrega el `id` a `CON_GLB` en `js/escena.js`.
 
 Para regenerar los modelos, con los GLB originales descargados de Sketchfab en una carpeta:
 
@@ -104,7 +104,7 @@ js/main.js         sesión WebXR, hit-test, anclas, toques, bucle y flujo de niv
 js/juego.js        niveles, puntaje, combo, tiempo y estrellas (sin three.js)
 js/escena.js       altar escalonado, catálogo de ofrendas, retícula
 js/audio.js        música y efectos sintetizados
-assets/models/     mesa, pan, veladora, mezcal, takis, calavera, cempasuchil, papel, foto, chocolate, calabaza, pizza y hamburguesa (.glb)
+assets/models/     mesa, pan, veladora, mezcal, takis, calavera, cempasuchil, papel, foto, chocolate, agua, mole, calabaza, pizza y hamburguesa (.glb)
 assets/audio/      musica.mp3
 modelos/           script de Blender que prepara los modelos
 ```
@@ -125,6 +125,8 @@ modelos/           script de Blender que prepara los modelos
 | [Marigolds in a vase 072022](https://sketchfab.com/3d-models/marigolds-in-a-vase-072022-60d85090755e48faa8cf56d61ad81dee) | [Roberta (Robin) Sullivan](https://sketchfab.com/rrs) | CC BY 4.0 |
 | [Papel Picado del Dia de muertos](https://sketchfab.com/3d-models/papel-picado-del-dia-de-muertos-38c0aa70f7c944dbbbbf68d1a0012622) | [Sandra.Arandano](https://sketchfab.com/Sandy.Celic) | CC BY 4.0 |
 | [The Day of the Dead (solo el portarretratos y el jarro de chocolate)](https://sketchfab.com/3d-models/the-day-of-the-dead-3307a813d92544d89f1245f1764e68fa) | [rodrigoscar](https://sketchfab.com/rodrigoscar) | CC BY 4.0 |
+| [Glass of water with 2 ice](https://sketchfab.com/3d-models/glass-of-water-with-2-ice-2f459806d04b4c4f8b331211b452956c) | [Kenniuuu](https://sketchfab.com/keniu) | CC BY 4.0 |
+| [Scan 2023-05-13T18:07:22.525Z](https://sketchfab.com/3d-models/scan-2023-05-13t180722525z-cbbefb775c3c4b758e78f28f1b58c661) (plato del mole) | [EGFoodScans](https://sketchfab.com/Exuberance1323) | CC BY 4.0 |
 | [Halloween Pumpkin](https://sketchfab.com/3d-models/halloween-pumpkin-abb8d12f13b44c6686628abde758bf1a) | [Charlie Tinley](https://sketchfab.com/Tnkii) | CC BY 4.0 |
 | [Pizza](https://sketchfab.com/3d-models/pizza-53ea3b41f92c475295367c1096538573) | [Gurkha](https://sketchfab.com/gurkha) | CC BY 4.0 |
 | [Back Yard Burgers - Classic Burger](https://sketchfab.com/3d-models/back-yard-burgers-classic-burger-6e13942ff76d4129b06e097cdd060adb) | [Ehsan Abbasi](https://sketchfab.com/EhsanAbbasi) | CC BY-SA 4.0 (la versión reducida `hamburguesa.glb` se comparte con la misma licencia) |
