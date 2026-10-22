@@ -364,6 +364,9 @@ async function iniciarXR() {
     domOverlay: { root: $('overlay') },
   });
   renderer.xr.setReferenceSpaceType('local');
+  // Con WebXR Layers (Chrome Android reciente) three r160 no dibuja nada encima de la cámara:
+  // se oculta "layers" para que use XRWebGLLayer, que sí funciona.
+  Object.defineProperty(sesion.renderState, 'layers', { value: undefined });
   await renderer.xr.setSession(sesion);
   const espacioVista = await sesion.requestReferenceSpace('viewer');
   hitTestSource = await sesion.requestHitTestSource({ space: espacioVista });
